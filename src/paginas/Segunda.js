@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios"
 
 export default function Segunda() {
-    const [form, setForm] = useState({ email: "", password: "",	image:"", name: "" })
+    const [form, setForm] = useState({ email: "", password: "", image: "", name: "" })
     function pegaDados(event) {
         setForm({ ...form, [event.target.name]: event.target.value })
     }
@@ -17,47 +17,53 @@ export default function Segunda() {
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
         const promise = axios.post(URL, dadosConta);
         promise
-          .then(res => {
-            setForm(res.data)
-            alert("Mensagem enviada!")
-          })
-          .catch(err => console.log(err.response.data));
-      }
+            .then(res => {
+                setForm(res.data)
+                alert("usuario cadastrado !")
+            
+            })
+            .catch(err => console.log(err.response.data));
+    }
     return (
         <PageContainer>
             <img src={logo} alt={"carregando"} />
 
             <ListContainer>
                 <form onSubmit={enviaDados}>
-                    <input type="email" placeholder="E-mail"
+                    <input data-test="email-input"
+                    type="email" placeholder="E-mail"
                         required
                         name="email"
                         value={form.email}
                         onChange={pegaDados}
                     />
-                    <input type="password" placeholder="senha"
+                
+                    <input data-test="password-input" 
+                    type="password" placeholder="senha"
                         required
                         name="password"
                         value={form.password}
                         onChange={pegaDados}
                     />
-                    <input type="text" placeholder="nome"
+                    <input data-test="user-name-input"
+                     type="text" placeholder="nome"
                         required
                         name="name"
                         value={form.name}
                         onChange={pegaDados}
                     />
-                    <input type="url" placeholder="foto"
+                    <input data-test="user-image-input"
+                        type="url" placeholder="foto"
                         required
                         name="image"
                         value={form.image}
                         onChange={pegaDados}
                     />
-                    <button data-test="book-seat-btn" type="submit" >Cadastrar</button>
+                    <button data-test="signup-btn" type="submit" >Cadastrar</button>
                 </form>
             </ListContainer>
 
-            <Link to={`/`} data-test="movie" >
+            <Link to={`/`} data-test="login-link" >
                 <p>Já tem uma conta? Faça login!</p>
             </Link>
         </PageContainer>

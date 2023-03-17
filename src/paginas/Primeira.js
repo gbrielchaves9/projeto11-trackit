@@ -1,15 +1,38 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import logo from "../assets/logo.png";
 import styled from "styled-components"
 import { Link } from "react-router-dom"
+import { useContext } from "react";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Primeira() {
+    const { setUser } = useContext(UserContext);
     const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
+    const [	password, setSenha] = useState("")
+    const navigate = useNavigate();
+
+    function handleLogin(user) {
+        setUser(user);
+        navigate("/Habitos");
+    }
+
     function enviaDados(e) {
-        e.preventDefault()
-        const dadosConta = { senha, email }
-        console.log(dadosConta)
+        e.preventDefault();
+        const dadosConta = { email,password };
+        axios
+            .post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", dadosConta)
+            .then((res) => {
+                handleLogin(res.data);
+                alert("login ok")
+            })
+            .catch((err) => {
+                alert("erro ")
+                console.log(err.data);
+                console.log(err.dadosConta);
+            });
     }
 
     return (
@@ -25,9 +48,9 @@ export default function Primeira() {
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                     />
-                    <input type="senha" placeholder="senha"
+                    <input type="password" placeholder="senha"
                         required
-                        value={senha}
+                        value={	password}
                         onChange={e => setSenha(e.target.value)}
                     />
                     <button data-test="book-seat-btn" type="submit" >Entrar</button>
